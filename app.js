@@ -30,15 +30,15 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/build'))); // Serve your static React files
 app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
 
-app.get('*', (req, res) => {  // Add this line
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+app.get('*', (req, res) => {  // This wildcard method handles all requests
+  res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
 // catch 404 and forward to error handler
@@ -51,5 +51,8 @@ app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
+
+const port = process.env.PORT || 5000; // Add this line
+app.listen(port, () => console.log(`Server is listening on port ${port}`)); // Add this line
 
 module.exports = app;
